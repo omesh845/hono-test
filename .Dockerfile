@@ -1,12 +1,17 @@
-FROM node:lts-alpine
- 
-USER node
-WORKDIR /home/node
- 
+
+# Setup Node
+FROM node:18-alpine as build
+
+# Dependency and Build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+
 COPY . .
-RUN npm ci
- 
-ARG PORT
-EXPOSE ${PORT:-3000}
+
+# Create JS Build
+# RUN npm run build
+
+EXPOSE 3000
  
 CMD ["npm", "run", "start"]
